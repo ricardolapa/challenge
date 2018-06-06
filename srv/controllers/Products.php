@@ -12,7 +12,7 @@ class Products
     public function getAll()
     {   
         try {
-            $this->products = App::get('database')->selectAll("users", "User");
+            $this->products = App::get('database')->selectAll("products", "Product");
             Api::response($this->products);
         } catch ( Exception $e ) {
             throw new Exception("Error Processing Request", 1);

@@ -14,6 +14,7 @@ class ComposerStaticInit2be5f3dce4994cee8f011271a18a65d8
         'Composer\\Autoload\\ComposerStaticInit2be5f3dce4994cee8f011271a18a65d8' => __DIR__ . '/..' . '/composer/autoload_static.php',
         'Connection' => __DIR__ . '/../..' . '/core/database/Connection.php',
         'Discount' => __DIR__ . '/../..' . '/controllers/Discount.php',
+        'Product' => __DIR__ . '/../..' . '/models/Product.model.php',
         'Products' => __DIR__ . '/../..' . '/controllers/Products.php',
         'QueryBuilder' => __DIR__ . '/../..' . '/core/database/QueryBuilder.php',
         'Request' => __DIR__ . '/../..' . '/core/Request.php',

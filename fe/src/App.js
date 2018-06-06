@@ -25,9 +25,10 @@ class App extends Component {
 		const productList = this.state.products.map((product)=> {
 			return <Product 
 						key={product.id} 
-						id={product.id} 
-						name={product.name} 
-						email={product.email} 
+						prod_id={product.prod_id} 
+						description={product.description} 
+						category={product.category} 
+						price={product.price} 
 					/>;
 		});	
 		return (

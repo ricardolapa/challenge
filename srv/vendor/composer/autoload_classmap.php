@@ -13,6 +13,7 @@ return array(
     'Composer\\Autoload\\ComposerStaticInit2be5f3dce4994cee8f011271a18a65d8' => $vendorDir . '/composer/autoload_static.php',
     'Connection' => $baseDir . '/core/database/Connection.php',
     'Discount' => $baseDir . '/controllers/Discount.php',
+    'Product' => $baseDir . '/models/Product.model.php',
     'Products' => $baseDir . '/controllers/Products.php',
     'QueryBuilder' => $baseDir . '/core/database/QueryBuilder.php',
     'Request' => $baseDir . '/core/Request.php',
