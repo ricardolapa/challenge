@@ -14,10 +14,14 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		HttpClass.prototype.request('getproducts').then((res) => {
-            this.setState({
-				products: res.data
-			});
+		HttpClass.prototype.request('login', 
+			{ user: 'Teste', pass: '1234' }
+		).then((res) => {
+			console.log(res);
+			
+            // this.setState({
+			// 	products: res.data
+			// });
         });
 	}
 

@@ -63,7 +63,7 @@ function handlePostFields($bodyParams)
 			"TransactionId" => null
 		],
 		"Body" => [
-			"Target" => "SRV"
+			"Target" => "SRV",
 		]
 	];
 
