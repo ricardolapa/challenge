@@ -10,6 +10,7 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			loading: false,
 			user: '',
             secret: '',
 			products: [],
@@ -19,11 +20,13 @@ class App extends Component {
 		}
 	}
 
-	onLogin() {        
+	onLogin() {
+		this.state.loading = true; 
         HttpClass.prototype.auth( 
 			{ user: this.state.user, secret: this.state.secret }
 		).then((res) => {
 			this.handleUserResponse(res);
+			this.state.loading = false;
         },(err) => {
             console.log(err);
         });
@@ -41,6 +44,10 @@ class App extends Component {
 		})
 	}
 
+	/**
+	 * User Response Handler
+	 * @param {object} res 
+	 */
 	handleUserResponse(res) {
 		let response = atob(res.data);
 		let responseSplited = response.split(':');
@@ -53,10 +60,16 @@ class App extends Component {
 		this.loadProducts();
 	}
 	
+	/**
+	 * Two Way Binding from an input to a state.value
+	 */
 	handleValues = (name, e) => {
         this.setState({ [name]: e.target.value });
 	}
 	
+	/**
+	 * Products Request
+	 */
 	loadProducts() {
 		HttpClass.prototype.request('getproducts', 
 			{ auth: this.state.secret }
@@ -67,11 +80,31 @@ class App extends Component {
 		})
 	}
 
+	/**
+	 * Appends product to ShoppingBag
+	 * @param {object} product 
+	 */
 	onAddProduct(product) {
-		this.state.shoppingBag.push(product);
-		this.setState({
-			bagCounter: this.state.shoppingBag.length
-		});		
+		console.log(product);
+		if (!this.productExists(product)) {
+			this.state.shoppingBag.push(product);
+			this.setState({
+				bagCounter: this.state.shoppingBag.length
+			});
+		}
+	}
+
+	/**
+	 * @param {object} product 
+	 * @return {boolean} 
+	 */
+	productExists(product) {
+		for (let i = 0; i < this.state.shoppingBag.length; i++) {
+			if (this.state.shoppingBag[i] === product) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	onRemoveProduct(product) {		
@@ -85,26 +118,17 @@ class App extends Component {
 		})
 	}
 
-	increaseQuantity(prod) {
-		prod.qty = prod.qty + 1;
-		console.log(prod);
-	}
-	decreaseQuantity(prod) {
-		if (prod.qty > 1) {
-			prod.qty = prod.qty - 1;
-		}
-		console.log(prod);
-	}
-
+	/**
+	 * changes an item quantity
+	 * @param {object} product 
+	 * @param {event} e 
+	 */
 	changeQty(product, e) {
 		if (e.target.value < 1) {
 			product.qty = 1
 		} else { 
 			product.qty = e.target.value;
 		}
-		
-		console.log(product);
-		return product.qty;
 	}
 
 	render() {
@@ -133,12 +157,6 @@ class App extends Component {
 				>
 						{product.description} | Qty: 
 					<input type="number" min="1" placeholder="if not set, 1unit default" value={product.qty} onChange={ (e) => this.changeQty(product, e) } />
-					{/* <button className="btn" onClick={ (e) => this.increaseQuantity(product) }>
-						Add Qty
-					</button>
-					<button className="btn" onClick={ () => this.decreaseQuantity(product) }>
-						dec
-					</button> */}
 
 					<button className="btn" onClick={ () => this.onRemoveProduct(product) }>
 						<span className="glyphicon glyphicon-remove-circle"></span>
@@ -149,11 +167,13 @@ class App extends Component {
 
 		return (
 			<div className="App">
+				<div className={!this.state.loading ? 'lds-dual-ring' : 'hidden'}></div>
 				{/* Navbar Partial */}
 				<Navbar/>
 				
 				{/* Login Partial */}
 					<div className={this.state.isLogged ? 'hidden': 'loginBox'} >
+						
 						<h3>Sign in</h3>
 						<div className="input-group">
 							<label>Username</label>
@@ -181,9 +201,11 @@ class App extends Component {
 									<span className="glyphicon glyphicon-user"></span> 
 									<strong>{this.state.logedUser}</strong>
 								</li>
-								<li onClick={() => this.onLogout()}>
+								<li >
+									<a href="#" onClick={() => this.onLogout()}>
 									<span className="glyphicon glyphicon-log-out"></span> 
 									Logout
+									</a>
 								</li>
 							</ul>
 						</div>
