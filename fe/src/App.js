@@ -10,10 +10,12 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			user: '',
             secret: '',
 			products: [],
 			logedUser: '',
-			isLogged: false
+			isLogged: false,
+			shoppingBag: []
 		}
 	}
 
@@ -21,8 +23,7 @@ class App extends Component {
         HttpClass.prototype.auth( 
 			{ user: this.state.user, secret: this.state.secret }
 		).then((res) => {
-			this.handleUserResponse(res),
-			this.loadProducts();
+			this.handleUserResponse(res);
         },(err) => {
             console.log(err);
         });
@@ -30,9 +31,13 @@ class App extends Component {
 	
 	onLogout() {
 		this.setState({
+			user: '',
 			secret: '',
 			logedUser: '',
 			isLogged: false,
+			products: [],
+			shoppingBag: [],
+			bagCounter: 0
 		})
 	}
 
@@ -44,8 +49,8 @@ class App extends Component {
 			secret: res.data,
 			logedUser: loggedUser,
 			isLogged: true,
-			products: [],
 		});
+		this.loadProducts();
 	}
 	
 	handleValues = (name, e) => {
@@ -62,16 +67,86 @@ class App extends Component {
 		})
 	}
 
+	onAddProduct(product) {
+		this.state.shoppingBag.push(product);
+		this.setState({
+			bagCounter: this.state.shoppingBag.length
+		});		
+	}
+
+	onRemoveProduct(product) {		
+		this.state.shoppingBag.map((item) => {
+			if (item === product) {
+				this.state.shoppingBag.pop(item);
+			}
+			this.setState({
+				bagCounter: this.state.shoppingBag.length
+			});
+		})
+	}
+
+	increaseQuantity(prod) {
+		prod.qty = prod.qty + 1;
+		console.log(prod);
+	}
+	decreaseQuantity(prod) {
+		if (prod.qty > 1) {
+			prod.qty = prod.qty - 1;
+		}
+		console.log(prod);
+	}
+
+	changeQty(product, e) {
+		if (e.target.value < 1) {
+			product.qty = 1
+		} else { 
+			product.qty = e.target.value;
+		}
+		
+		console.log(product);
+		return product.qty;
+	}
+
 	render() {
 		const productList = this.state.products.map((product)=> {
-			return <Product 
-						key={product.id} 
-						prod_id={product.prod_id} 
-						description={product.description} 
-						category={product.category} 
-						price={product.price} 
-					/>;
+			return (
+				<div key={product.id} className="col-sm-4">
+                	<article className="product">
+						<Product 
+							prod_id={product.prod_id} 
+							description={product.description} 
+							category={product.category} 
+							price={product.price}
+						/>
+						<button className="btn btn-default" onClick={ () => this.onAddProduct(product) }>Add to Chart</button>
+					</article>
+				</div>
+			);
 		});	
+		const shopBagList = this.state.shoppingBag.map((product, index)=> {
+			return (
+				<li key={index} 
+					prod_id={product.prod_id} 
+					description={product.description} 
+					category={product.category} 
+					price={product.price} 
+				>
+						{product.description} | Qty: 
+					<input type="number" min="1" placeholder="if not set, 1unit default" value={product.qty} onChange={ (e) => this.changeQty(product, e) } />
+					{/* <button className="btn" onClick={ (e) => this.increaseQuantity(product) }>
+						Add Qty
+					</button>
+					<button className="btn" onClick={ () => this.decreaseQuantity(product) }>
+						dec
+					</button> */}
+
+					<button className="btn" onClick={ () => this.onRemoveProduct(product) }>
+						<span className="glyphicon glyphicon-remove-circle"></span>
+					</button>
+				</li>
+			);
+		});	
+
 		return (
 			<div className="App">
 				{/* Navbar Partial */}
@@ -100,17 +175,32 @@ class App extends Component {
 				{/* Main App View */}
 				<div className={this.state.isLogged ? 'container': 'hidden'}>
 					{/* User Partial */}
-						<ul className="nav navbar-nav user-nav">
-							<li>
-								<span className="glyphicon glyphicon-user"></span> 
-								<strong>{this.state.logedUser}</strong>
-							</li>
-							<li onClick={() => this.onLogout()}>
-								<span className="glyphicon glyphicon-log-out"></span> 
-								Logout
-							</li>
-						</ul>
+						<div className="row">
+							<ul className="nav navbar-nav user-nav">
+								<li>
+									<span className="glyphicon glyphicon-user"></span> 
+									<strong>{this.state.logedUser}</strong>
+								</li>
+								<li onClick={() => this.onLogout()}>
+									<span className="glyphicon glyphicon-log-out"></span> 
+									Logout
+								</li>
+							</ul>
+						</div>
 					{/* END User Partial */}
+
+					{/* ShoppingBag Partial */}
+						<div className="row">
+							<div className="col-sm-12">
+								<small>{this.state.bagCounter ? 'Shopping Bag': ''}</small>
+							</div>
+						</div>
+						<div className="row">
+							<ul className="baglist">
+								{shopBagList}
+							</ul>
+						</div>
+					{/* ShoppingBag Partial */}
 
 					{/* Product Partial */}
 						<div className="row">

@@ -38,4 +38,15 @@
 .glyphicon {
     margin-right: 10px;
 }
+
+.baglist {
+    list-style-type: none;
+}
+.baglist li {
+    display: block;
+    float: none;
+}
+.baglist li button {
+    background: transparent;
+}
 .hidden { display:none; }
