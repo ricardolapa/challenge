@@ -71,12 +71,14 @@ class App extends Component {
 	 * Products Request
 	 */
 	loadProducts() {
+		this.state.loading = true;
 		HttpClass.prototype.request('getproducts', 
 			{ auth: this.state.secret }
 		).then((res) => {
 			this.setState({
 				products: res.data
-			})
+			});
+			this.state.loading = false;
 		})
 	}
 
@@ -167,7 +169,7 @@ class App extends Component {
 
 		return (
 			<div className="App">
-				<div className={!this.state.loading ? 'lds-dual-ring' : 'hidden'}></div>
+				<div className={this.state.loading ? 'lds-dual-ring' : 'hidden'}></div>
 				{/* Navbar Partial */}
 				<Navbar/>
 				
