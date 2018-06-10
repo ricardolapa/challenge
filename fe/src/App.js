@@ -10,6 +10,7 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			loading: false,
 			user: '',
             secret: '',
 			products: [],
@@ -19,11 +20,13 @@ class App extends Component {
 		}
 	}
 
-	onLogin() {        
+	onLogin() {
+		this.state.loading = true; 
         HttpClass.prototype.auth( 
 			{ user: this.state.user, secret: this.state.secret }
 		).then((res) => {
 			this.handleUserResponse(res);
+			this.state.loading = false;
         },(err) => {
             console.log(err);
         });
@@ -41,6 +44,10 @@ class App extends Component {
 		})
 	}
 
+	/**
+	 * User Response Handler
+	 * @param {object} res 
+	 */
 	handleUserResponse(res) {
 		let response = atob(res.data);
 		let responseSplited = response.split(':');
@@ -53,10 +60,16 @@ class App extends Component {
 		this.loadProducts();
 	}
 	
+	/**
+	 * Two Way Binding from an input to a state.value
+	 */
 	handleValues = (name, e) => {
         this.setState({ [name]: e.target.value });
 	}
 	
+	/**
+	 * Products Request
+	 */
 	loadProducts() {
 		HttpClass.prototype.request('getproducts', 
 			{ auth: this.state.secret }
@@ -67,6 +80,10 @@ class App extends Component {
 		})
 	}
 
+	/**
+	 * Appends product to ShoppingBag
+	 * @param {object} product 
+	 */
 	onAddProduct(product) {
 		console.log(product);
 		if (!this.productExists(product)) {
@@ -77,6 +94,10 @@ class App extends Component {
 		}
 	}
 
+	/**
+	 * @param {object} product 
+	 * @return {boolean} 
+	 */
 	productExists(product) {
 		for (let i = 0; i < this.state.shoppingBag.length; i++) {
 			if (this.state.shoppingBag[i] === product) {
@@ -97,6 +118,11 @@ class App extends Component {
 		})
 	}
 
+	/**
+	 * changes an item quantity
+	 * @param {object} product 
+	 * @param {event} e 
+	 */
 	changeQty(product, e) {
 		if (e.target.value < 1) {
 			product.qty = 1
@@ -141,11 +167,13 @@ class App extends Component {
 
 		return (
 			<div className="App">
+				<div className={!this.state.loading ? 'lds-dual-ring' : 'hidden'}></div>
 				{/* Navbar Partial */}
 				<Navbar/>
 				
 				{/* Login Partial */}
 					<div className={this.state.isLogged ? 'hidden': 'loginBox'} >
+						
 						<h3>Sign in</h3>
 						<div className="input-group">
 							<label>Username</label>
