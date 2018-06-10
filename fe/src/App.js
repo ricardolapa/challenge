@@ -157,7 +157,9 @@ class App extends Component {
 					category={product.category} 
 					price={product.price} 
 				>
-						{product.description} | Qty: 
+					{product.description} 
+					<br/>
+					Qty: &nbsp;
 					<input type="number" min="1" placeholder="if not set, 1unit default" value={product.qty} onChange={ (e) => this.changeQty(product, e) } />
 
 					<button className="btn" onClick={ () => this.onRemoveProduct(product) }>
