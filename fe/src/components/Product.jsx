@@ -21,12 +21,14 @@ export class Product extends Component
 
     render() {
         return (
-            <article className="col-sm-4">
-                <h4>{this.state.description}</h4>
-                <p>Category: {this.state.category}</p>
-                <p>Price: {this.state.price}</p>
-                <button onClick={ () => this.onAddProduct(this.state) }>Select</button>
-            </article>
+            <div className="col-sm-4 ">
+                <article className="product">
+                    <h4>{this.state.description}</h4>
+                    <p>Category: {this.state.category}</p>
+                    <p>{this.state.price}</p>
+                    <button className="btn btn-default" onClick={ () => this.onAddProduct(this.state) }>Add to Chart</button>
+                </article>
+            </div>
         );
     }
 }

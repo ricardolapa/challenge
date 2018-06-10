@@ -42,7 +42,7 @@ class HttpClass extends Component
                 'content-type': 'application/json'
             },
             method: 'POST'
-        }).then(response => response.text());
+        }).then(response => response.json());
     }
 
     getEnvironment() {

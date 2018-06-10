@@ -1,0 +1,41 @@
+.loginBox {
+    width: 300px;
+    height: auto;
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    box-shadow: 0 0 8px rgb(199, 199, 199);
+    border-radius: 10px;
+}
+
+.loginBox button {
+    margin-top: 20px;
+}
+.main-nav {
+    background-color: darkslategrey;
+    color: #fff;
+    padding: 15px 25px;
+}
+.main-nav h1 {
+    font-size: 2em;
+}
+.user-nav {
+    padding: 15px;
+}
+.user-nav li {
+    display: inline-block;
+    margin: 10px;
+}
+.product {
+    padding: 16px;
+    width: 100%;
+    height: 175px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 8px rgb(199, 199, 199);
+}
+.glyphicon {
+    margin-right: 10px;
+}
+.hidden { display:none; }

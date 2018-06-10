@@ -23,7 +23,7 @@ class Products
     {
         $id = Request::param();
         try {
-            $this->product = App::get('database')->whereFrom("id", $id, "users", "User");
+            $this->product = App::get('database')->whereFrom("id", $id, "products", "Product");
             return Api::response($this->product);
         } catch ( Exception $e ) {
             throw new Exception("Error Processing Request", 1);

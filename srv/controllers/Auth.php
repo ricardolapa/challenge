@@ -12,17 +12,19 @@ class Auth
         $body = file_get_contents("php://input");
 
         if($body) {
-            $body_params = json_decode($body);
-            //die(var_dump($body_params));
-
-            $key = 'secret';
-            $signature = hash_hmac('SHA256',$key,true);
-            $signature_encoded = base64_encode($signature);
-            
-            //build and return the token
-            $token = "$signature_encoded";
-            Api::response($token) ;
+            try {
+                $body_params = json_decode($body);
+                $user = App::get('database')->whereFrom('name', $body_params->Body->user, 'customers', 'User');
+                Api::response($this->setSecret($user[0]));
+            } catch (Exeption $e) {
+                Api::response($e->getMessage());
+            }
         }
-        
+    }
+
+    private function setSecret($user)
+    {   
+        $secret = base64_encode($user->id.":".$user->name);
+        return $secret;
     }
 }
