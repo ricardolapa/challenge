@@ -2,16 +2,38 @@ import { Component } from 'react';
 
 class HttpClass extends Component
 {
-
-    request(service) {
+    /**
+     * Global Post Request
+     * @param {string} service 
+     * @param {object} options 
+     */
+    request(service, options) {
         let url = this.getEnvironment();
 
         var data = {
             endpoint: service,
-            options: {
-                category: 'ProdA',
-                discountValue: '10'
-            }
+            options: options
+        }
+
+        return fetch(url, {
+            body: JSON.stringify(data),
+            headers: {
+                'content-type': 'application/json'
+            },
+            method: 'POST'
+        }).then(response => response.json());
+    }
+
+     /**
+     * Auth Post Request
+     * @param {object} options 
+     */
+    auth(options) {
+        let url = this.getEnvironment();
+
+        var data = {
+            endpoint: 'login',
+            options: options
         }
 
         return fetch(url, {

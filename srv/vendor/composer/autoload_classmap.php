@@ -8,11 +8,13 @@ $baseDir = dirname($vendorDir);
 return array(
     'Api' => $baseDir . '/http/Api.php',
     'App' => $baseDir . '/core/App.php',
+    'Auth' => $baseDir . '/controllers/Auth.php',
     'ComposerAutoloaderInit2be5f3dce4994cee8f011271a18a65d8' => $vendorDir . '/composer/autoload_real.php',
     'Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
     'Composer\\Autoload\\ComposerStaticInit2be5f3dce4994cee8f011271a18a65d8' => $vendorDir . '/composer/autoload_static.php',
     'Connection' => $baseDir . '/core/database/Connection.php',
     'Discount' => $baseDir . '/controllers/Discount.php',
+    'Product' => $baseDir . '/models/Product.model.php',
     'Products' => $baseDir . '/controllers/Products.php',
     'QueryBuilder' => $baseDir . '/core/database/QueryBuilder.php',
     'Request' => $baseDir . '/core/Request.php',

@@ -2,6 +2,10 @@
 
 class User
 {
+    public $id;
     public $name;
-    public $email;
+    public $since;
+    public $revenue;
+    protected $password;
+
 }

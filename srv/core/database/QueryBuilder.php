@@ -42,12 +42,12 @@ class QueryBuilder
     {
         try {
             $statement = $this->pdo->prepare(
-                "SELECT * FROM {$table} WHERE {$neddle} = {$haystack}"
+                "SELECT * FROM {$table} WHERE {$neddle} = '{$haystack}'"
             );
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_CLASS, $intoClass);
         }  catch (Exception $e) {
-            die('Error executing query');
+            die('Error executing query' .$e->getMessage());
         }
     }
 }

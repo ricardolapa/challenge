@@ -5,9 +5,10 @@ export class Product extends Component
     constructor(props) {
         super(props);
         this.state = {
-            name: props.name,
-            email: props.email,
-            id: props.id
+            description: props.description,
+            category: props.category,
+            price: props.price,
+            prod_id: props.prod_id
         }
     }
 
@@ -20,11 +21,14 @@ export class Product extends Component
 
     render() {
         return (
-            <article className="col-sm-4">
-                <h4>{this.state.name}</h4>
-                <p>{this.state.email}</p>
-                <button onClick={ () => this.onAddProduct(this.state) }>Select</button>
-            </article>
+            <div className="col-sm-4 ">
+                <article className="product">
+                    <h4>{this.state.description}</h4>
+                    <p>Category: {this.state.category}</p>
+                    <p>{this.state.price}</p>
+                    <button className="btn btn-default" onClick={ () => this.onAddProduct(this.state) }>Add to Chart</button>
+                </article>
+            </div>
         );
     }
 }
