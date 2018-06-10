@@ -68,10 +68,22 @@ class App extends Component {
 	}
 
 	onAddProduct(product) {
-		this.state.shoppingBag.push(product);
-		this.setState({
-			bagCounter: this.state.shoppingBag.length
-		});		
+		console.log(product);
+		if (!this.productExists(product)) {
+			this.state.shoppingBag.push(product);
+			this.setState({
+				bagCounter: this.state.shoppingBag.length
+			});
+		}
+	}
+
+	productExists(product) {
+		for (let i = 0; i < this.state.shoppingBag.length; i++) {
+			if (this.state.shoppingBag[i] === product) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	onRemoveProduct(product) {		
@@ -85,26 +97,12 @@ class App extends Component {
 		})
 	}
 
-	increaseQuantity(prod) {
-		prod.qty = prod.qty + 1;
-		console.log(prod);
-	}
-	decreaseQuantity(prod) {
-		if (prod.qty > 1) {
-			prod.qty = prod.qty - 1;
-		}
-		console.log(prod);
-	}
-
 	changeQty(product, e) {
 		if (e.target.value < 1) {
 			product.qty = 1
 		} else { 
 			product.qty = e.target.value;
 		}
-		
-		console.log(product);
-		return product.qty;
 	}
 
 	render() {
@@ -133,12 +131,6 @@ class App extends Component {
 				>
 						{product.description} | Qty: 
 					<input type="number" min="1" placeholder="if not set, 1unit default" value={product.qty} onChange={ (e) => this.changeQty(product, e) } />
-					{/* <button className="btn" onClick={ (e) => this.increaseQuantity(product) }>
-						Add Qty
-					</button>
-					<button className="btn" onClick={ () => this.decreaseQuantity(product) }>
-						dec
-					</button> */}
 
 					<button className="btn" onClick={ () => this.onRemoveProduct(product) }>
 						<span className="glyphicon glyphicon-remove-circle"></span>
@@ -181,9 +173,11 @@ class App extends Component {
 									<span className="glyphicon glyphicon-user"></span> 
 									<strong>{this.state.logedUser}</strong>
 								</li>
-								<li onClick={() => this.onLogout()}>
+								<li >
+									<a href="#" onClick={() => this.onLogout()}>
 									<span className="glyphicon glyphicon-log-out"></span> 
 									Logout
+									</a>
 								</li>
 							</ul>
 						</div>
